@@ -1,4 +1,4 @@
-# PoisonSting Tool
+# PoisonSting
 
 ![PoisonSting](https://github.com/ARINJoyM/PoisonSting/assets/92751372/afc52d8a-db89-43f7-8743-8a86c58f9a6e)
 
